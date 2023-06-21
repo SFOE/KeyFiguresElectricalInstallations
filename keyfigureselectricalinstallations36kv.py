@@ -249,3 +249,32 @@ plt.legend(loc='lower left')
 plt.title("Länge der Leitungen (km) - StromnetzTyp")
 plt.savefig('plots/LaengeLeitungen_StromnetzTyp.png')
 plt.close()
+
+#Barchart Länge Leitungen nach Spannung
+
+#Daten vorbereiten
+dfLeitungenBarChart = dfLaengeLeitungen.pivot(index=['Spannung'],columns=['LeitungTyp'],values='Laenge').reset_index()
+dfLeitungenBarChart = dfLeitungenBarChart.fillna(0)
+dfLeitungenBarChart['Spannung'] = dfLeitungenBarChart['Spannung'].replace({'S':''},regex=True)
+dfLeitungenBarChart = dfLeitungenBarChart.sort_values('Freileitung',ascending=False)
+
+#bar chart properties
+x = np.arange(len(dfLeitungenBarChart['Spannung']))
+width = 0.3
+
+#draw grouped bar chart
+fig, ax = plt.subplots()
+bar1 = ax.bar(x - width/2, dfLeitungenBarChart['Freileitung'], width, label='Freileitung')
+bar2 = ax.bar(x + width/2, dfLeitungenBarChart['Kabelleitung'], width, label='Kabelleitung')
+
+#ax.set_xlabel('Year')
+ax.set_ylabel('Länge (km)')
+ax.set_title('Länge der Leitungen')
+ax.set_xticks(x, dfLeitungenBarChart['Spannung'])
+
+#setting bar labels
+ax.bar_label(bar1)
+ax.bar_label(bar2)
+plt.xticks(rotation = 90)
+plt.savefig('plots/LaengeLeitungen_Spannung_Uebersicht.png',bbox_inches='tight')
+plt.close()
