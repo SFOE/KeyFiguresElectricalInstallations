@@ -140,7 +140,7 @@ dfStorymap['Kabel_s66B'] = 1
 #Speichern
 dfStorymap.to_csv("data/Kennzahlen_Storymap.csv", header=False, index=False, mode='a')
 
-"""### Visualisierungen erstellen"""
+"""### Visualisierungen Werke"""
 
 #Daten für Visualisierung laden
 df = pd.read_csv("data/Kennzahlen_Werke.csv", parse_dates=['Datum'])
@@ -151,6 +151,8 @@ dfVis['LeitungGesamt'] = dfVis['LeitungGesamt']/1000
 dfVis['Freileitung'] = dfVis['Freileitung'].round(0)
 dfVis['Kabelleitung'] = dfVis['Kabelleitung'].round(0)
 dfVis['LeitungGesamt'] = dfVis['LeitungGesamt'].round(0)
+
+"""#### Anzahl Masten pro Werkbetreiber"""
 
 #Barchart Anzahl Masten
 dfVis = dfVis.sort_values('AnzahlMasten',ascending=False)
@@ -163,6 +165,8 @@ ax.bar_label(ax.containers[0], label_type='edge')
 plt.savefig('plots/AnzahlMasten.png',bbox_inches='tight')
 plt.close()
 
+"""#### Anzahl Stationen pro Werkbetreiber"""
+
 #Barchart Anzahl Stationen
 dfVis = dfVis.sort_values('AnzahlStationen',ascending=False)
 fig, ax = plt.subplots()
@@ -173,6 +177,8 @@ plt.ylabel("Anzahl Stationen")
 ax.bar_label(ax.containers[0], label_type='edge')
 plt.savefig('plots/AnzahlStationen.png',bbox_inches='tight')
 plt.close()
+
+"""#### Länge der Leitungen pro Werkbetreiber"""
 
 #Barchart Länge Leitungen
 dfVis = dfVis.sort_values('LeitungGesamt',ascending=False)
@@ -200,14 +206,18 @@ plt.xticks(rotation = 90)
 plt.savefig('plots/LaengeLeitungen.png',bbox_inches='tight')
 plt.close()
 
+"""### Visualisierungen Masten"""
+
 #Zeitliche Entwicklung Anzahl Masten
 dfAnzahlMasten = pd.read_csv("data/Kennzahlen_Masten.csv", parse_dates=['Datum'])
-dfAnzahlMasten = dfAnzahlMasten.pivot(index="Datum", columns=["MastTyp","StromnetzTyp"],values="Anzahl")
-dfAnzahlMasten.plot(figsize=(15,10))
+dfAnzahlMastenEntwicklung = dfAnzahlMasten.pivot(index="Datum", columns=["MastTyp","StromnetzTyp"],values="Anzahl")
+dfAnzahlMastenEntwicklung.plot(figsize=(15,10))
 plt.legend(loc='lower left')
 plt.title("Übersicht Anzahl Masten")
 plt.savefig('plots/UebersichtAnzahlMasten.png')
 plt.close()
+
+"""### Visualisierung Stationen"""
 
 #Zeitliche Entwicklung Anzahl Stationen
 dfAnzahlStationen = pd.read_csv("data/Kennzahlen_Stationen.csv", parse_dates=['Datum'])
@@ -218,10 +228,16 @@ plt.title("Übersicht Anzahl Stationen")
 plt.savefig('plots/UebersichtAnzahlStationen.png')
 plt.close()
 
+"""### Visualisierung Leitungen
+
+"""
+
 #Zeitliche Entwicklung Länge der Leitungen - Daten vorbereiten
 dfLaengeLeitungen = pd.read_csv("data/Kennzahlen_Leitungen.csv", parse_dates=['Datum'])
 dfLaengeLeitungen['Laenge'] = dfLaengeLeitungen['Laenge']/1000
 dfLaengeLeitungen['Laenge'] = dfLaengeLeitungen['Laenge'].round(0)
+
+"""#### Leitungslänge pro Leitungstyp - zeitliche Entwicklung"""
 
 #Zeitliche Entwicklung Länge der Leitungen - Leitungstyp
 dfLaengeLeitungTyp = dfLaengeLeitungen.groupby(['LeitungTyp','Datum'])['Laenge'].sum().reset_index()
@@ -232,6 +248,8 @@ plt.title("Länge der Leitungen (km) - Leitungstyp")
 plt.savefig('plots/LaengeLeitungen_Typ.png')
 plt.close()
 
+"""#### Leitungslänge pro Spannungsebene - zeitliche Entwicklung"""
+
 #Zeitliche Entwicklung Länge der Leitungen - Spannung
 dfLaengeLeitungTyp = dfLaengeLeitungen.groupby(['Spannung','Datum'])['Laenge'].sum().reset_index()
 dfLaengeLeitungTyp = dfLaengeLeitungTyp.pivot(index=["Datum"], columns=["Spannung"],values="Laenge")
@@ -241,6 +259,8 @@ plt.title("Länge der Leitungen (km) - Spannung")
 plt.savefig('plots/LaengeLeitungen_Spannung.png')
 plt.close()
 
+"""#### Leitungslänge pro Stromnetztyp - zeitliche Entwicklung"""
+
 #Zeitliche Entwicklung Länge der Leitungen - StromnetzTyp
 dfLaengeLeitungTyp = dfLaengeLeitungen.groupby(['StromnetzTyp','Datum'])['Laenge'].sum().reset_index()
 dfLaengeLeitungTyp = dfLaengeLeitungTyp.pivot(index=["Datum"], columns=["StromnetzTyp"],values="Laenge")
@@ -249,6 +269,8 @@ plt.legend(loc='lower left')
 plt.title("Länge der Leitungen (km) - StromnetzTyp")
 plt.savefig('plots/LaengeLeitungen_StromnetzTyp.png')
 plt.close()
+
+"""#### Leitungslänge nach Spannung"""
 
 #Barchart Länge Leitungen nach Spannung
 
@@ -263,7 +285,7 @@ x = np.arange(len(dfLeitungenBarChart['Spannung']))
 width = 0.3
 
 #draw grouped bar chart
-fig, ax = plt.subplots()
+fig, ax = plt.subplots(figsize=(15,10))
 bar1 = ax.bar(x - width/2, dfLeitungenBarChart['Freileitung'], width, label='Freileitung')
 bar2 = ax.bar(x + width/2, dfLeitungenBarChart['Kabelleitung'], width, label='Kabelleitung')
 
@@ -279,3 +301,23 @@ plt.xticks(rotation = 90)
 plt.legend(loc='upper right')
 plt.savefig('plots/LaengeLeitungen_Spannung_Uebersicht.png',bbox_inches='tight')
 plt.close()
+
+"""#### Masttyp Übersicht"""
+
+#Daten vorbereiten
+dfAnzahlMastenUebersicht = dfAnzahlMasten
+dfAnzahlMastenUebersicht = dfAnzahlMastenUebersicht.loc[df.Datum == datetime.today().strftime("%Y-%m-%d")]
+
+#Barchart
+x = np.arange(len(dfAnzahlMastenUebersicht['MastTyp']))
+fig, ax = plt.subplots(figsize=(15,10))
+bar1 = ax.bar(x, dfAnzahlMastenUebersicht['Anzahl'], label='MastTyp')
+ax.set_ylabel('Anzahl Masten')
+ax.set_title('Anzahl Masten')
+ax.set_xticks(x, dfAnzahlMastenUebersicht['MastTyp'])
+ax.bar_label(bar1)
+plt.savefig('plots/AnzahlMasten_Uebersicht.png',bbox_inches='tight')
+plt.close()
+
+
+
