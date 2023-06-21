@@ -41,7 +41,7 @@ dfLeitungKPI = dfLeitungKPI.to_frame().reset_index()
 dfLeitungKPI['Datum'] = datetime.today().strftime("%Y-%m-%d")
 
 #Speichern
-dfLeitungKPI.to_csv("data/Kennzahlen_Leitungen.csv", header=True, index=False, mode='a')
+dfLeitungKPI.to_csv("data/Kennzahlen_Leitungen.csv", header=False, index=False, mode='a')
 
 """## Kennzahlen Masten"""
 
@@ -50,7 +50,7 @@ dfMastKPI = dfMastKPI.rename(columns={'xtf_id':'Anzahl'})
 dfMastKPI['Datum'] = datetime.today().strftime("%Y-%m-%d")
 
 #Speichern
-dfMastKPI.to_csv("data/Kennzahlen_Masten.csv", header=True, index=False, mode='a')
+dfMastKPI.to_csv("data/Kennzahlen_Masten.csv", header=False, index=False, mode='a')
 
 """## Kennzahlen Stationen"""
 
@@ -59,7 +59,7 @@ dfStationKPI = dfStationKPI.rename(columns={'xtf_id':'Anzahl'})
 dfStationKPI['Datum'] = datetime.today().strftime("%Y-%m-%d")
 
 #Speichern
-dfStationKPI.to_csv("data/Kennzahlen_Stationen.csv", header=True, index=False, mode='a')
+dfStationKPI.to_csv("data/Kennzahlen_Stationen.csv", header=False, index=False, mode='a')
 
 """## Kennzahlen Werke"""
 
@@ -92,7 +92,7 @@ dfWerke = dfWerke.fillna(0)
 dfWerke['Datum'] = datetime.today().strftime("%Y-%m-%d")
 
 #Speichern
-dfWerke.to_csv("data/Kennzahlen_Werke.csv", header=True, index=False, mode='a')
+dfWerke.to_csv("data/Kennzahlen_Werke.csv", header=False, index=False, mode='a')
 
 """### Kennzahlen für Visualisierung in Storymap ableiten"""
 
@@ -138,7 +138,7 @@ dfStorymap['Total_s66B'] = 1
 dfStorymap['Kabel_s66B'] = 1
 
 #Speichern
-dfStorymap.to_csv("data/Kennzahlen_Storymap.csv", header=True, index=False, mode='a')
+dfStorymap.to_csv("data/Kennzahlen_Storymap.csv", header=False, index=False, mode='a')
 
 """### Visualisierungen erstellen"""
 
