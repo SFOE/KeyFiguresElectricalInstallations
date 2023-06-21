@@ -4,14 +4,15 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "00 6 * * *" #runs at 06:00 UTC
-
+permissions:
+  contents: write
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
     
       - name: checkout repo content
-        uses: actions/checkout@v3 # checkout the repository content to github runner.
+        uses: actions/checkout@v2 # checkout the repository content to github runner.
         
       - name: setup python
         uses: actions/setup-python@v4
