@@ -1,0 +1,9 @@
+name: KeyFiguresElectricalInstallations
+channels:
+  - conda-forge
+dependencies:
+  - pandas==2.0.1
+  - geopandas==0.12.2
+  - numpy==1.24.2
+  - matplotlib==3.7.0
+  - notebook==6.5.4
