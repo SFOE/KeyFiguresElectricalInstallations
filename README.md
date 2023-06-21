@@ -17,6 +17,7 @@ Die Kennzahlen werden täglich abgeleitet:
 ![image](plots/UebersichtAnzahlStationen.png)
 
 ## Kennzahlen nationale Übersicht - Masten
+![image](plots/AnzahlMasten_Uebersicht.png)
 ![image](plots/UebersichtAnzahlMasten.png)
 
 ## Kennzahlen pro Werkbetreiber
