@@ -8,6 +8,7 @@ Die Kennzahlen werden täglich abgeleitet:
 - [Übersicht Werke](#kennzahlen-pro-werkbetreiber)
 
 ## Kennzahlen nationale Übersicht - Leitungen
+![image](plots/LaengeLeitungen_Spannung_Uebersicht.png)
 ![image](plots/LaengeLeitungen_Spannung.png)
 ![image](plots/LaengeLeitungen_Typ.png)
 ![image](plots/LaengeLeitungen_StromnetzTyp.png)
