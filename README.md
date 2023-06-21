@@ -1,6 +1,11 @@
 # Kennzahlen Elektrische Anlagen >36 kV
 Auf dieser Seite werden die wichtigsten Kennzahlen der Geobasisdaten "Elekrische Anlagen mit einer Nennspannung von über 36 kV" dargestellt.
-Die Kennzahlen werden täglich abgeleitet.
+Die Kennzahlen werden täglich abgeleitet:
+
+- [Übersicht Leitungen](#kennzahlen-nationale-übersicht---leitungen)
+- [Übersicht Stationen](#kennzahlen-nationale-übersicht---stationen)
+- [Übersicht Masten](#kennzahlen-nationale-übersicht---masten)
+- [Übersicht Werke](#kennzahlen-pro-werkbetreiber)
 
 ## Kennzahlen nationale Übersicht - Leitungen
 ![image](plots/LaengeLeitungen_Spannung.png)
