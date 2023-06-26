@@ -144,7 +144,7 @@ dfStorymap.to_csv("data/Kennzahlen_Storymap.csv", header=False, index=False, mod
 
 #Daten für Visualisierung laden
 df = pd.read_csv("data/Kennzahlen_Werke.csv", parse_dates=['Datum'])
-dfVis = df.loc[df.Datum == datetime.today().strftime("%Y-%m-%d")]
+dfVis = df.loc[df['Datum'] == datetime.today().strftime("%Y-%m-%d")]
 dfVis['Freileitung'] = dfVis['Freileitung']/1000
 dfVis['Kabelleitung'] = dfVis['Kabelleitung']/1000
 dfVis['LeitungGesamt'] = dfVis['LeitungGesamt']/1000
