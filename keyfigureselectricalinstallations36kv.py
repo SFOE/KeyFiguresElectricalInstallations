@@ -278,12 +278,12 @@ dfLaengeLeitungen
 #auch löschen
 dfLaengeLeitungen.pivot(index='Spannung',columns=['LeitungTyp'],values='Laenge').reset_index()
 
-dfLaengeLeitungen.pivot_table(index='Spannung',columns=['LeitungTyp'],values='Laenge').reset_index()
+dfLaengeLeitungen.pivot_table(index='Spannung',columns=['LeitungTyp'],values='Laenge', aggfunc='sum').reset_index()
 
 #Barchart Länge Leitungen nach Spannung
 
 #Daten vorbereiten
-dfLeitungenBarChart = dfLaengeLeitungen.pivot_table(index='Spannung',columns=['LeitungTyp'],values='Laenge').reset_index()
+dfLeitungenBarChart = dfLaengeLeitungen.pivot_table(index='Spannung',columns=['LeitungTyp'],values='Laenge', aggfunc='sum').reset_index()
 dfLeitungenBarChart = dfLeitungenBarChart.fillna(0)
 dfLeitungenBarChart['Spannung'] = dfLeitungenBarChart['Spannung'].replace({'S':''},regex=True)
 dfLeitungenBarChart = dfLeitungenBarChart.sort_values('Freileitung',ascending=False)
