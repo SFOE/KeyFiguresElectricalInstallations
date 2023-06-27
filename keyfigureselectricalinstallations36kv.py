@@ -260,8 +260,6 @@ plt.title("Länge der Leitungen (km) - Spannung")
 plt.savefig('plots/LaengeLeitungen_Spannung.png')
 plt.close()
 
-dfLaengeLeitungTyp
-
 """#### Leitungslänge pro Stromnetztyp - zeitliche Entwicklung"""
 
 #Zeitliche Entwicklung Länge der Leitungen - StromnetzTyp
@@ -275,12 +273,17 @@ plt.close()
 
 """#### Leitungslänge nach Spannung"""
 
+dfLaengeLeitungen
+
+#auch löschen
 dfLaengeLeitungen.pivot(index='Spannung',columns=['LeitungTyp'],values='Laenge').reset_index()
+
+dfLaengeLeitungen.pivot_table(index='Spannung',columns=['LeitungTyp'],values='Laenge').reset_index()
 
 #Barchart Länge Leitungen nach Spannung
 
 #Daten vorbereiten
-dfLeitungenBarChart = dfLaengeLeitungen.pivot(index='Spannung',columns=['LeitungTyp'],values='Laenge').reset_index()
+dfLeitungenBarChart = dfLaengeLeitungen.pivot_table(index='Spannung',columns=['LeitungTyp'],values='Laenge').reset_index()
 dfLeitungenBarChart = dfLeitungenBarChart.fillna(0)
 dfLeitungenBarChart['Spannung'] = dfLeitungenBarChart['Spannung'].replace({'S':''},regex=True)
 dfLeitungenBarChart = dfLeitungenBarChart.sort_values('Freileitung',ascending=False)
