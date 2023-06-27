@@ -273,13 +273,6 @@ plt.close()
 
 """#### Leitungslänge nach Spannung"""
 
-dfLaengeLeitungen
-
-#auch löschen
-dfLaengeLeitungen.pivot(index='Spannung',columns=['LeitungTyp'],values='Laenge').reset_index()
-
-dfLaengeLeitungen.pivot_table(index='Spannung',columns=['LeitungTyp'],values='Laenge', aggfunc='sum').reset_index()
-
 #Barchart Länge Leitungen nach Spannung
 
 #Daten vorbereiten
