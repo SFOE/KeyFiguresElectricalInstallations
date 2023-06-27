@@ -307,7 +307,7 @@ plt.close()
 
 #Daten vorbereiten
 dfAnzahlMastenUebersicht = dfAnzahlMasten
-dfAnzahlMastenUebersicht = dfAnzahlMastenUebersicht.loc[df.Datum == datetime.today().strftime("%Y-%m-%d")]
+dfAnzahlMastenUebersicht = dfAnzahlMastenUebersicht.loc[dfAnzahlMastenUebersicht['Datum'] == datetime.today().strftime("%Y-%m-%d")]
 
 #Barchart
 x = np.arange(len(dfAnzahlMastenUebersicht['MastTyp']))
@@ -319,6 +319,4 @@ ax.set_xticks(x, dfAnzahlMastenUebersicht['MastTyp'])
 ax.bar_label(bar1)
 plt.savefig('plots/AnzahlMasten_Uebersicht.png',bbox_inches='tight')
 plt.close()
-
-
 
