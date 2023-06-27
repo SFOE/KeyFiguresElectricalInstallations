@@ -242,7 +242,7 @@ dfLaengeLeitungen['Laenge'] = dfLaengeLeitungen['Laenge'].round(0)
 
 #Zeitliche Entwicklung Länge der Leitungen - Leitungstyp
 dfLaengeLeitungTyp = dfLaengeLeitungen.groupby(['LeitungTyp','Datum'])['Laenge'].sum().reset_index()
-dfLaengeLeitungTyp = dfLaengeLeitungTyp.pivot(index=["Datum"], columns=["LeitungTyp"],values="Laenge")
+dfLaengeLeitungTyp = dfLaengeLeitungTyp.pivot(index="Datum", columns=["LeitungTyp"],values="Laenge")
 dfLaengeLeitungTyp.plot(figsize=(15,10))
 plt.legend(loc='lower left')
 plt.title("Länge der Leitungen (km) - Leitungstyp")
@@ -253,18 +253,20 @@ plt.close()
 
 #Zeitliche Entwicklung Länge der Leitungen - Spannung
 dfLaengeLeitungTyp = dfLaengeLeitungen.groupby(['Spannung','Datum'])['Laenge'].sum().reset_index()
-dfLaengeLeitungTyp = dfLaengeLeitungTyp.pivot(index=["Datum"], columns=["Spannung"],values="Laenge")
+dfLaengeLeitungTyp = dfLaengeLeitungTyp.pivot(index="Datum", columns=["Spannung"],values="Laenge")
 dfLaengeLeitungTyp.plot(figsize=(15,10))
 plt.legend(loc='lower left')
 plt.title("Länge der Leitungen (km) - Spannung")
 plt.savefig('plots/LaengeLeitungen_Spannung.png')
 plt.close()
 
+dfLaengeLeitungTyp
+
 """#### Leitungslänge pro Stromnetztyp - zeitliche Entwicklung"""
 
 #Zeitliche Entwicklung Länge der Leitungen - StromnetzTyp
 dfLaengeLeitungTyp = dfLaengeLeitungen.groupby(['StromnetzTyp','Datum'])['Laenge'].sum().reset_index()
-dfLaengeLeitungTyp = dfLaengeLeitungTyp.pivot(index=["Datum"], columns=["StromnetzTyp"],values="Laenge")
+dfLaengeLeitungTyp = dfLaengeLeitungTyp.pivot(index="Datum", columns=["StromnetzTyp"],values="Laenge")
 dfLaengeLeitungTyp.plot(figsize=(15,10))
 plt.legend(loc='lower left')
 plt.title("Länge der Leitungen (km) - StromnetzTyp")
@@ -273,10 +275,12 @@ plt.close()
 
 """#### Leitungslänge nach Spannung"""
 
+dfLaengeLeitungen.pivot(index='Spannung',columns=['LeitungTyp'],values='Laenge').reset_index()
+
 #Barchart Länge Leitungen nach Spannung
 
 #Daten vorbereiten
-dfLeitungenBarChart = dfLaengeLeitungen.pivot(index=['Spannung'],columns=['LeitungTyp'],values='Laenge').reset_index()
+dfLeitungenBarChart = dfLaengeLeitungen.pivot(index='Spannung',columns=['LeitungTyp'],values='Laenge').reset_index()
 dfLeitungenBarChart = dfLeitungenBarChart.fillna(0)
 dfLeitungenBarChart['Spannung'] = dfLeitungenBarChart['Spannung'].replace({'S':''},regex=True)
 dfLeitungenBarChart = dfLeitungenBarChart.sort_values('Freileitung',ascending=False)
