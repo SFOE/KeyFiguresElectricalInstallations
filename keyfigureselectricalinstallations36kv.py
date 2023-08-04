@@ -143,8 +143,8 @@ dfWerkeStation = dfWerkeStation.groupby(['Werk'])['xtf_id'].count().reset_index(
 dfWerkeStation = dfWerkeStation.rename(columns={'xtf_id':'AnzahlStationen'})
 
 # Zusammenführen
-dfWerke = pd.merge(dfWerkeLeitung, dfWerkeMast, how="left", on=["Werk"])
-dfWerke = pd.merge(dfWerke, dfWerkeStation, how="left", on=["Werk"])
+dfWerke = pd.merge(dfWerkeLeitung, dfWerkeMast, how="outer", on=["Werk"])
+dfWerke = pd.merge(dfWerke, dfWerkeStation, how="outer", on=["Werk"])
 dfWerke = dfWerke.fillna(0)
 dfWerke['Datum'] = datetime.today().strftime("%Y-%m-%d")
 
@@ -331,6 +331,9 @@ plt.close()
 """#### Leitungslänge nach Spannung"""
 
 #Barchart Länge Leitungen nach Spannung
+
+#Nur aktuellste Zeile
+dfLaengeLeitungen = dfLaengeLeitungen.loc[dfLaengeLeitungen['Datum'] == datetime.today().strftime("%Y-%m-%d")]
 
 #Daten vorbereiten
 dfLeitungenBarChart = dfLaengeLeitungen.pivot_table(index='Spannung',columns=['LeitungTyp'],values='Laenge', aggfunc='sum').reset_index()
