@@ -19,6 +19,8 @@ Notebook um Kennzahlen des Geobasisdatensatzes "Elektrische Anlagen mit einer Ne
 
 #pip install numpy
 
+#pip install owslib
+
 # Commented out IPython magic to ensure Python compatibility.
 import geopandas as gpd
 import pandas as pd
@@ -26,11 +28,66 @@ import numpy as np
 from datetime import datetime
 import matplotlib.pyplot as plt
 # %matplotlib inline
+from owslib.wfs import WebFeatureService
+from requests import Request
 
-url = "https://data.geo.admin.ch/ch.bfe.elektrische-anlagen_ueber_36/gpkg/2056/ElektrischeAnlagenNennspannungUeber36kV_V1.gpkg"
-dfLeitung = gpd.read_file(url, driver="GPKG", layer='ElektrischeAnlagenNennspannungUeber36kV_V1_ElektrischeAnlagen_Leitung')
-dfStation = gpd.read_file(url, driver="GPKG", layer='ElektrischeAnlagenNennspannungUeber36kV_V1_ElektrischeAnlagen_Station')
-dfMast = gpd.read_file(url, driver="GPKG", layer='ElektrischeAnlagenNennspannungUeber36kV_V1_ElektrischeAnlagen_Mast')
+# WFS-Domain (auf PROD schalten)
+url = "https://integration.geodienste.ch/db/elektrische_anlagen_ueber_36kv_v1_0_0/deu"
+
+# Initialize
+wfs = WebFeatureService(url=url)
+
+# Parameter für Datenfetching (Count 100 entfernen)
+paramsLeitung = dict(service='WFS', version="2.0.0", request='GetFeature', typeName='leitung', outputFormat='geojson', count=100, startIndex=0)
+paramsStation = dict(service='WFS', version="2.0.0", request='GetFeature', typeName='station_punkt', outputFormat='geojson', count=100, startIndex=0)
+paramsMast = dict(service='WFS', version="2.0.0", request='GetFeature', typeName='mast', outputFormat='geojson', count=100, startIndex=0)
+
+# Parse URL mit Parametern
+urlleitung = Request('GET', url, params=paramsLeitung).prepare().url
+urlstation = Request('GET', url, params=paramsStation).prepare().url
+urlmast = Request('GET', url, params=paramsMast).prepare().url
+
+# Daten als Dataframe lesen
+leitung = gpd.read_file(urlleitung)
+station = gpd.read_file(urlstation)
+mast = gpd.read_file(urlmast)
+
+# Mapping auf bestehendes Datenmodell
+dfLeitung = leitung.rename(columns ={
+                         'id':'xtf_id',
+                         'bezeichnung':'Bezeichnung',
+                         'eigentuemer':'Eigentuemer',
+                         'eigentum_vollstaendig':'EigentumVollstaendig',
+                         'lagegenauigkeit':'Lagegenauigkeit',
+                         'stromnetz_typ':'StromnetzTyp',
+                         'leitung_typ':'LeitungTyp',
+                         'spannung':'Spannung',
+                         'betriebsstatus':'Betriebsstatus',
+                         'frequenz':'Frequenz'})
+
+dfStation = station.rename(columns ={
+                        'id':'xtf_id',
+                        'bezeichnung':'Bezeichnung',
+                        'eigentuemer':'Eigentuemer',
+                        'eigentum_vollstaendig':'EigentumVollstaendig',
+                        'lagegenauigkeit':'Lagegenauigkeit',
+                        'stromnetz_typ':'StromnetzTyp',
+                        'station_typ': 'StationTyp'})
+
+dfMast = mast.rename(columns ={
+                        'id':'xtf_id',
+                        'bezeichnung':'Bezeichnung',
+                        'eigentuemer':'Eigentuemer',
+                        'eigentum_vollstaendig':'EigentumVollstaendig',
+                        'lagegenauigkeit':'Lagegenauigkeit',
+                        'stromnetz_typ':'StromnetzTyp',
+                        'mast_typ':'MastTyp',
+                        'hoehe':'Hoehe'})
+
+#url = "https://data.geo.admin.ch/ch.bfe.elektrische-anlagen_ueber_36/gpkg/2056/ElektrischeAnlagenNennspannungUeber36kV_V1.gpkg"
+#dfLeitung = gpd.read_file(url, driver="GPKG", layer='ElektrischeAnlagenNennspannungUeber36kV_V1_ElektrischeAnlagen_Leitung')
+#dfStation = gpd.read_file(url, driver="GPKG", layer='ElektrischeAnlagenNennspannungUeber36kV_V1_ElektrischeAnlagen_Station')
+#dfMast = gpd.read_file(url, driver="GPKG", layer='ElektrischeAnlagenNennspannungUeber36kV_V1_ElektrischeAnlagen_Mast')
 
 """## Kennzahlen Leitungen"""
 
