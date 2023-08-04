@@ -38,9 +38,9 @@ url = "https://integration.geodienste.ch/db/elektrische_anlagen_ueber_36kv_v1_0_
 wfs = WebFeatureService(url=url)
 
 # Parameter für Datenfetching (Count 100 entfernen)
-paramsLeitung = dict(service='WFS', version="2.0.0", request='GetFeature', typeName='leitung', outputFormat='geojson', count=100, startIndex=0)
-paramsStation = dict(service='WFS', version="2.0.0", request='GetFeature', typeName='station_punkt', outputFormat='geojson', count=100, startIndex=0)
-paramsMast = dict(service='WFS', version="2.0.0", request='GetFeature', typeName='mast', outputFormat='geojson', count=100, startIndex=0)
+paramsLeitung = dict(service='WFS', version="2.0.0", request='GetFeature', typeName='leitung', outputFormat='geojson', startIndex=0)
+paramsStation = dict(service='WFS', version="2.0.0", request='GetFeature', typeName='station_punkt', outputFormat='geojson', startIndex=0)
+paramsMast = dict(service='WFS', version="2.0.0", request='GetFeature', typeName='mast', outputFormat='geojson', startIndex=0)
 
 # Parse URL mit Parametern
 urlleitung = Request('GET', url, params=paramsLeitung).prepare().url
