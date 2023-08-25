@@ -84,11 +84,6 @@ dfMast = mast.rename(columns ={
                         'mast_typ':'MastTyp',
                         'hoehe':'Hoehe'})
 
-#url = "https://data.geo.admin.ch/ch.bfe.elektrische-anlagen_ueber_36/gpkg/2056/ElektrischeAnlagenNennspannungUeber36kV_V1.gpkg"
-#dfLeitung = gpd.read_file(url, driver="GPKG", layer='ElektrischeAnlagenNennspannungUeber36kV_V1_ElektrischeAnlagen_Leitung')
-#dfStation = gpd.read_file(url, driver="GPKG", layer='ElektrischeAnlagenNennspannungUeber36kV_V1_ElektrischeAnlagen_Station')
-#dfMast = gpd.read_file(url, driver="GPKG", layer='ElektrischeAnlagenNennspannungUeber36kV_V1_ElektrischeAnlagen_Mast')
-
 """## Kennzahlen Leitungen"""
 
 # Länge der Leitungen berechnen und nach Spannung aufsummieren
@@ -213,12 +208,14 @@ dfVis = df.loc[df['Datum'] == datetime.today().strftime("%Y-%m-%d")]
 """#### Anzahl Masten pro Werkbetreiber"""
 
 #Barchart Anzahl Masten
-dfVis = dfVis.sort_values('AnzahlMasten',ascending=False)
+dfVisMast = dfVis[dfVis["AnzahlMasten"]>0]
+dfVisMast = dfVisMast.sort_values('AnzahlMasten',ascending=False)
 fig, ax = plt.subplots()
-ax.bar(dfVis['Werk'], dfVis['AnzahlMasten'])
+ax.bar(dfVisMast['Werk'], dfVisMast['AnzahlMasten'])
 ax.set_title('Anzahl Masten')
 plt.xticks(rotation = 90)
 plt.ylabel("Anzahl Masten")
+plt.rcParams["figure.figsize"] = (10,5)
 ax.bar_label(ax.containers[0], label_type='edge')
 plt.savefig('plots/AnzahlMasten.png',bbox_inches='tight')
 plt.close()
@@ -226,34 +223,39 @@ plt.close()
 """#### Anzahl Stationen pro Werkbetreiber"""
 
 #Barchart Anzahl Stationen
-dfVis = dfVis.sort_values('AnzahlStationen',ascending=False)
+dfVisStationen = dfVis[dfVis["AnzahlStationen"]>0]
+dfVisStationen = dfVisStationen.sort_values('AnzahlStationen',ascending=False)
 fig, ax = plt.subplots()
-ax.bar(dfVis['Werk'], dfVis['AnzahlStationen'])
+plt.rcParams["figure.figsize"] = (4,2)
+ax.bar(dfVisStationen['Werk'], dfVisStationen['AnzahlStationen'])
 ax.set_title('Anzahl Stationen')
 plt.xticks(rotation = 90)
 plt.ylabel("Anzahl Stationen")
 ax.bar_label(ax.containers[0], label_type='edge')
+plt.rcParams["figure.figsize"] = (10,5)
 plt.savefig('plots/AnzahlStationen.png',bbox_inches='tight')
 plt.close()
 
 """#### Länge der Leitungen pro Werkbetreiber"""
 
 #Barchart Länge Leitungen
-dfVis = dfVis.sort_values('LeitungGesamt',ascending=False)
+
+dfVisLaenge = dfVis[dfVis["LeitungGesamt"]>0]
+dfVisLaenge = dfVisLaenge.sort_values('LeitungGesamt',ascending=False)
 
 #bar chart properties
-x = np.arange(len(dfVis['Werk']))
-width = 0.3
+x = np.arange(len(dfVisLaenge['Werk']))
+width = 0.4
 
 #draw grouped bar chart
 fig, ax = plt.subplots()
-bar1 = ax.bar(x - width/2, dfVis['Freileitung'], width, label='Freileitung')
-bar2 = ax.bar(x + width/2, dfVis['Kabelleitung'], width, label='Kabelleitung')
+bar1 = ax.bar(x - width/2, dfVisLaenge['Freileitung'], width, label='Freileitung')
+bar2 = ax.bar(x + width/2, dfVisLaenge['Kabelleitung'], width, label='Kabelleitung')
 
 #ax.set_xlabel('Year')
 ax.set_ylabel('Länge (km)')
 ax.set_title('Länge der Leitungen')
-ax.set_xticks(x, dfVis['Werk'])
+ax.set_xticks(x, dfVisLaenge['Werk'])
 ax.legend()
 
 #setting bar labels
@@ -261,6 +263,7 @@ ax.bar_label(bar1)
 ax.bar_label(bar2)
 plt.xticks(rotation = 90)
 
+plt.rcParams["figure.figsize"] = (20,6)
 plt.savefig('plots/LaengeLeitungen.png',bbox_inches='tight')
 plt.close()
 
