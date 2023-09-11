@@ -31,8 +31,8 @@ import matplotlib.pyplot as plt
 from owslib.wfs import WebFeatureService
 from requests import Request
 
-# WFS-Domain (auf PROD schalten)
-url = "https://integration.geodienste.ch/db/elektrische_anlagen_ueber_36kv_v1_0_0/deu"
+# WFS-Domain
+url = "https://geodienste.ch/db/elektrische_anlagen_ueber_36kv_v1_0_0/deu"
 
 # Initialize
 wfs = WebFeatureService(url=url)
